@@ -1,7 +1,16 @@
 import React from "react";
 
-const Layout = () => {
-  return <div>Layout</div>;
+import Navbar from "./Navbar";
+
+const Layout = ({ children }) => {
+  return (
+    <>
+      <div className="container mx-auto">
+        <Navbar />
+        {children}
+      </div>
+    </>
+  );
 };
 
 export default Layout;
