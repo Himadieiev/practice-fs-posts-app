@@ -46,6 +46,6 @@ export const createPost = async (req, res) => {
 
     res.json(newPostWithoutImg);
   } catch (error) {
-    res.join({ message: "Something went wrong" });
+    res.json({ message: "Something went wrong" });
   }
 };
