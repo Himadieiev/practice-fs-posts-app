@@ -49,3 +49,19 @@ export const createPost = async (req, res) => {
     res.json({ message: "Something went wrong" });
   }
 };
+
+//Get all posts
+export const getAll = async (req, res) => {
+  try {
+    const posts = await Post.find().sort("-createdAt");
+    const popularPosts = await Post.find().limit(5).sort("views");
+
+    if (!posts) {
+      return res.json({ message: "There are no posts" });
+    }
+
+    res.json({ posts, popularPosts });
+  } catch (error) {
+    res.json({ message: "Something went wrong" });
+  }
+};
