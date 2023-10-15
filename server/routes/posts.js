@@ -6,6 +6,7 @@ import {
   getAll,
   getById,
   getMyPosts,
+  removePost,
 } from "../controllers/posts.js";
 
 const router = new Router();
@@ -18,6 +19,9 @@ router.get("/", getAll);
 
 //Get post by id
 router.get("/:id", getById);
+
+//Remove post
+router.delete("/:id", checkAuth, removePost);
 
 //Get my posts
 router.get("/user/me", checkAuth, getMyPosts);

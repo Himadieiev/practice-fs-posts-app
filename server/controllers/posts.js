@@ -79,6 +79,25 @@ export const getById = async (req, res) => {
   }
 };
 
+//Remove post
+export const removePost = async (req, res) => {
+  try {
+    const post = await Post.findByIdAndDelete(req.params.id);
+
+    if (!post) {
+      return res.json({ message: "This post does not exist" });
+    }
+
+    await User.findByIdAndUpdate(req.userId, {
+      $pull: { posts: req.params.id },
+    });
+
+    res.json({ message: "The post has been deleted" });
+  } catch (error) {
+    res.json({ message: "Something went wrong" });
+  }
+};
+
 //Get my posts
 export const getMyPosts = async (req, res) => {
   try {
