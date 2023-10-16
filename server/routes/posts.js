@@ -7,6 +7,7 @@ import {
   getById,
   getMyPosts,
   removePost,
+  updatePost,
 } from "../controllers/posts.js";
 
 const router = new Router();
@@ -19,6 +20,9 @@ router.get("/", getAll);
 
 //Get post by id
 router.get("/:id", getById);
+
+//Update post
+router.put("/:id", checkAuth, updatePost);
 
 //Remove post
 router.delete("/:id", checkAuth, removePost);
