@@ -1,24 +1,24 @@
+import { Layout } from "./components/Layout.jsx";
 import { Routes, Route } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
 
-import Layout from "./components/Layout";
-import MainPage from "./pages/MainPage";
-import PostsPage from "./pages/PostsPage";
-import PostPage from "./pages/PostPage";
-import AddPostPage from "./pages/AddPostPage";
-import RegisterPage from "./pages/RegisterPage";
-import LoginPage from "./pages/LoginPage";
-import EditPostPage from "./pages/EditPostPage";
-import { currentUser } from "./redux/features/auth/authSlice";
+import { MainPage } from "./pages/MainPage";
+import { PostsPage } from "./pages/PostsPage";
+import { PostPage } from "./pages/PostPage";
+import { AddPostPage } from "./pages/AddPostPage";
+import { RegisterPage } from "./pages/RegisterPage";
+import { LoginPage } from "./pages/LoginPage";
+import { EditPostPage } from "./pages/EditPostPage";
+import { getMe } from "./redux/features/auth/authSlice.js";
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(currentUser());
+    dispatch(getMe());
   }, [dispatch]);
 
   return (
@@ -32,7 +32,8 @@ function App() {
         <Route path="register" element={<RegisterPage />} />
         <Route path="login" element={<LoginPage />} />
       </Routes>
-      <ToastContainer position="bottom-right" />
+
+      <ToastContainer position="bottom-right" autoClose={1000} />
     </Layout>
   );
 }

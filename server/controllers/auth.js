@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 
 import User from "../models/User.js";
 
-//Register user
 export const register = async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -11,7 +10,9 @@ export const register = async (req, res) => {
     const isUsed = await User.findOne({ username });
 
     if (isUsed) {
-      return res.json({ message: "This username is already in use" });
+      return res.json({
+        message: "This username is already in use",
+      });
     }
 
     const salt = bcrypt.genSaltSync(10);
@@ -32,26 +33,34 @@ export const register = async (req, res) => {
 
     await newUser.save();
 
-    res.json({ newUser, message: "Registration was successful" });
+    res.json({
+      newUser,
+      token,
+      message: "Registration was successful",
+    });
   } catch (error) {
-    res.json({ message: "Error occurred while creating a user" });
+    res.json({ message: "Authorization error" });
   }
 };
-//Login user
+
+// Login user
 export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
-
     const user = await User.findOne({ username });
 
     if (!user) {
-      return res.json({ message: "This user does not exist" });
+      return res.json({
+        message: "This user does not exist",
+      });
     }
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
-      return res.json({ message: "Invalid password" });
+      return res.json({
+        message: "Incorrect password",
+      });
     }
 
     const token = jwt.sign(
@@ -62,18 +71,25 @@ export const login = async (req, res) => {
       { expiresIn: "30d" }
     );
 
-    res.json({ token, user, message: "You have successfully logged in" });
+    res.json({
+      token,
+      user,
+      message: "Login successful",
+    });
   } catch (error) {
-    res.json({ message: "Error during authorization" });
+    res.json({ message: "Authentication error" });
   }
 };
-//Current user
-export const current = async (req, res) => {
+
+// Get Me
+export const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.userId);
 
     if (!user) {
-      return res.json({ message: "This user does not exist" });
+      return res.json({
+        message: "This user does not exist",
+      });
     }
 
     const token = jwt.sign(
@@ -84,8 +100,11 @@ export const current = async (req, res) => {
       { expiresIn: "30d" }
     );
 
-    res.json({ token, user });
+    res.json({
+      user,
+      token,
+    });
   } catch (error) {
-    res.json({ message: "No access" });
+    res.json({ message: "Access denied" });
   }
 };
